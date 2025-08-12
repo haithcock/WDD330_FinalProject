@@ -1,0 +1,20 @@
+<!-- views/weather.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather for <%= location %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>Weather in <%= location %></h1>
+  
+  <div class="weather-card">
+    <p>Temperature: <%= weather.temperature %>°C</p>
+    <p>Conditions: <%= weather.weather_descriptions[0] %></p>
+    <p>Humidity: <%= weather.humidity %>%</p>
+    <p>Wind: <%= weather.wind_speed %> km/h</p>
+  </div>
+
+  <a href="/">Search again</a>
+</body>
+</html>
