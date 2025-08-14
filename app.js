@@ -1,39 +1,34 @@
-// app.js
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
-
-const path = require('path');
-
-// Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Import middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+const setupViewEngine = require('./middleware/viewEngine');
+setupViewEngine(app);
+
 const bodyParsers = require('./middleware/bodyParsers');
 const staticFiles = require('./middleware/staticFiles');
 const errorHandler = require('./middleware/errorHandler');
-const setupViewEngine = require('./middleware/viewEngine');
-
-// Apply middleware
 app.use(bodyParsers);
 app.use(staticFiles);
-setupViewEngine(app);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
 
 
-// Routes
 const indexRouter = require('./routes/index');
 app.use('/', indexRouter);
 
+
 app.use(errorHandler);
 
-// Start Server
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
