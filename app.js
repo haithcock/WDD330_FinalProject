@@ -14,6 +14,10 @@ const setupViewEngine = require('./middleware/viewEngine');
 app.use(bodyParsers);
 app.use(staticFiles);
 setupViewEngine(app);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
 
 // Routes
 const indexRouter = require('./routes/index');
