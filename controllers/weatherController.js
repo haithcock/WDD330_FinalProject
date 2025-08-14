@@ -1,6 +1,7 @@
 // controllers/weatherController.js
 const axios = require('axios');
 require('dotenv').config();
+const FORECAST_DAYS = 5; 
 
 const getWeather = async (req, res, next) => {
   try {
@@ -18,9 +19,10 @@ const getWeather = async (req, res, next) => {
     const { lat, lng } = geocodeResponse.data.results[0].geometry;
 
     // 2. Get weather (Weatherstack API)
-    const weatherResponse = await axios.get(
-      `http://api.weatherstack.com/current?access_key=${process.env.WEATHERSTACK_API_KEY}&query=${lat},${lng}`
-    );
+ // Change from current weather to forecast
+const response = await axios.get(
+  `http://api.weatherstack.com/forecast?access_key=${process.env.WEATHERSTACK_API_KEY}&query=${coordinates}&forecast_days=5`
+);
 
     if (weatherResponse.data.error) {
       throw new Error(weatherResponse.data.error.info);
