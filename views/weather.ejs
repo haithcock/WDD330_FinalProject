@@ -2,50 +2,41 @@
 <html>
 <head>
   <title>Weather for <%= location %></title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="public/css/style.css">
 
 </head>
 <body>
   <h1>Weather in <%= location %></h1>
   
   <div class="weather-card">
-    <h2>Current Conditions</h2>
     <p>🌡️ Temperature: <%= current.temperature %>°C</p>
     <p>🌦️ Conditions: <%= current.weather_descriptions[0] %></p>
     <p>💧 Humidity: <%= current.humidity %>%</p>
     <p>💨 Wind: <%= current.wind_speed %> km/h</p>
+    <% if (current.uv_index) { %>
+      <p>☀️ UV Index: <%= current.uv_index %></p>
+    <% } %>
   </div>
 
-  <!-- 5-Day Forecast Section -->
-  <h2>5-Day Forecast</h2>
-  <div class="forecast-container">
-    <% forecast.forEach(day => { %>
-      <div class="forecast-card">
-        <h3><%= new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }) %></h3>
-        <p><%= new Date(day.date).toLocaleDateString() %></p>
-        <p>⬆️ High: <%= day.max_temp %>°C</p>
-        <p>⬇️ Low: <%= day.min_temp %>°C</p>
-        <p>🌧️ Precip: <%= day.precipitation %> mm</p>
-        <p>💨 Wind: <%= day.wind_speed %> km/h</p>
-        <p>💧 Humidity: <%= day.humidity %>%</p>
-        <p>☀️ UV: <%= day.uv_index %></p>
-        <p>🌅 <%= day.sunrise %></p>
-        <p>🌇 <%= day.sunset %></p>
-      </div>
-    <% }) %>
-  </div>
-
+  <!-- Packing Suggestions Section -->
   <div class="packing-section">
-  <h2>Packing Suggestions</h2>
-  <div class="packing-container">
-    <% packing.forEach(suggestion => { %>
-      <div class="packing-card">
-        <h3><%= suggestion.item %></h3>
-        <p>Why: <%= suggestion.reason %></p>
-      </div>
-    <% }) %>
+    <h2 class="packing-header">Packing Suggestions</h2>
+    
+    <% if (packing.length) { %>
+      <% packing.forEach(group => { %>
+        <div class="suggestion-group">
+          <div class="suggestion-reason">👉 <%= group.reason %></div>
+          <div class="suggestion-items">
+            <% group.items.forEach(item => { %>
+              <div class="suggestion-item"><%= item %></div>
+            <% }) %>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p>No specific packing suggestions for this weather.</p>
+    <% } %>
   </div>
-</div>
 
   <a href="/">Search again</a>
 </body>

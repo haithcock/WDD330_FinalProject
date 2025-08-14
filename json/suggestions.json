@@ -1,0 +1,32 @@
+{
+  "temperature": {
+    "freezing": {
+      "items": ["Heavy winter coat", "Thermal underwear", "Winter boots"],
+      "reason": "Temperatures below 0°C"
+    },
+    "cold": {
+      "items": ["Jacket", "Sweater", "Warm hat"],
+      "reason": "Temperatures between 0-10°C"
+    },
+    "moderate": {
+      "items": ["Light jacket", "Long-sleeve shirts"],
+      "reason": "Temperatures between 10-20°C"
+    }
+  },
+  "precipitation": {
+    "rain": {
+      "items": ["Umbrella", "Waterproof jacket", "Waterproof shoes"],
+      "reason": "Rain expected"
+    },
+    "snow": {
+      "items": ["Snow boots", "Ice scraper", "Snow gloves"],
+      "reason": "Snow expected"
+    }
+  },
+  "uv": {
+    "high": {
+      "items": ["Sunscreen SPF 50+", "Sunglasses", "Sun hat"],
+      "reason": "High UV index (>6)"
+    }
+  }
+}
