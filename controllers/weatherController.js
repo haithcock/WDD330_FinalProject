@@ -1,6 +1,48 @@
 const axios = require('axios');
 require('dotenv').config();
 
+//=========================================================
+
+const generatePackingSuggestions = (current, forecast) => {
+  const suggestions = [];
+  
+  // 1. Temperature-based suggestions
+  if (current.temperature < 5) {
+    suggestions.push({ item: "Heavy winter coat", reason: "Freezing temperatures" });
+  } else if (current.temperature < 15) {
+    suggestions.push({ item: "Light jacket", reason: "Cool weather" });
+  } else if (current.temperature > 25) {
+    suggestions.push({ item: "Sunscreen", reason: "Hot weather" });
+    suggestions.push({ item: "Hat", reason: "Sun protection" });
+  }
+
+  // 2. Precipitation-based suggestions
+  if (current.precip > 2 || forecast.some(day => day.precipitation > 2)) {
+    suggestions.push({ item: "Umbrella", reason: "Rain expected" });
+    suggestions.push({ item: "Waterproof shoes", reason: "Wet conditions" });
+  }
+
+  // 3. Activity-based suggestions
+  if (current.uv_index > 6) {
+    suggestions.push({ item: "Sunglasses", reason: "High UV index" });
+  }
+  if (forecast.some(day => day.maxwind > 20)) {
+    suggestions.push({ item: "Windbreaker", reason: "Windy conditions" });
+  }
+
+  // 4. Special cases
+  if (forecast.some(day => day.condition.toLowerCase().includes("snow"))) {
+    suggestions.push({ item: "Winter boots", reason: "Snow expected" });
+  }
+  if (current.humidity > 80) {
+    suggestions.push({ item: "Moisture-wicking clothes", reason: "High humidity" });
+  }
+
+  return suggestions;
+};
+
+//=========================================================
+
 const getWeather = async (req, res, next) => {
   try {
     const { location } = req.body;
@@ -40,6 +82,18 @@ const getWeather = async (req, res, next) => {
       sunrise: day.sunrise,
       sunset: day.sunset
     }));
+
+    //==========================================================
+
+    const packingSuggestions = generatePackingSuggestions(
+      weatherResponse.data.current, 
+      forecastData
+    );
+    
+
+
+
+    //==========================================================
 
     // 4. Render results with both current and forecast data
     res.render('weather', {

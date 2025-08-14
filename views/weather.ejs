@@ -35,6 +35,18 @@
     <% }) %>
   </div>
 
+  <div class="packing-section">
+  <h2>Packing Suggestions</h2>
+  <div class="packing-container">
+    <% packing.forEach(suggestion => { %>
+      <div class="packing-card">
+        <h3><%= suggestion.item %></h3>
+        <p>Why: <%= suggestion.reason %></p>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
   <a href="/">Search again</a>
 </body>
 </html>
