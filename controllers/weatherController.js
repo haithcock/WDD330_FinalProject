@@ -1,4 +1,3 @@
-// controllers/weatherController.js
 const axios = require('axios');
 require('dotenv').config();
 
@@ -16,25 +15,42 @@ const getWeather = async (req, res, next) => {
     }
 
     const { lat, lng } = geocodeResponse.data.results[0].geometry;
+    const coordinates = `${lat},${lng}`;  // Create coordinates string
 
-    // 2. Get weather (Weatherstack API)
+    // 2. Get weather forecast (Weatherstack API) for 5 days
     const weatherResponse = await axios.get(
-      `http://api.weatherstack.com/current?access_key=${process.env.WEATHERSTACK_API_KEY}&query=${lat},${lng}`
+      `http://api.weatherstack.com/forecast?access_key=${process.env.WEATHERSTACK_API_KEY}&query=${coordinates}&forecast_days=5`
     );
 
     if (weatherResponse.data.error) {
       throw new Error(weatherResponse.data.error.info);
     }
 
-    // 3. Render results
+    // 3. Process forecast data
+    const forecastData = Object.entries(weatherResponse.data.forecast).map(([date, day]) => ({
+      date,
+      max_temp: day.maxtemp,
+      min_temp: day.mintemp,
+      avg_temp: day.avgtemp,
+      condition: day.condition,
+      precipitation: day.totalprecip,
+      wind_speed: day.maxwind,
+      humidity: day.avghumidity,
+      uv_index: day.uv_index,
+      sunrise: day.sunrise,
+      sunset: day.sunset
+    }));
+
+    // 4. Render results with both current and forecast data
     res.render('weather', {
       location,
-      weather: weatherResponse.data.current,
+      current: weatherResponse.data.current,
+      forecast: forecastData,
       coordinates: { lat, lng }
     });
 
   } catch (err) {
-    next(err); // Pass to error middleware
+    next(err);
   }
 };
 

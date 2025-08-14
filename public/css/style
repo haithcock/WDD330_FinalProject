@@ -11,3 +11,18 @@ body {
   border-radius: 8px;
   margin: 20px 0;
 }
+
+.forecast-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.forecast-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 180px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
